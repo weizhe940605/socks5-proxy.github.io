@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOCKS5 技术系列：从协议底层到企业级架构 | 完整指南</title>
+  <meta name="description" content="六篇深度技术文章，系统讲解 SOCKS5 协议原理、部署实战、安全合规、高可用架构与源码实现。适合运维、开发与安全工程师。">
+  <meta name="keywords" content="SOCKS5系列, 代理协议, 网络架构, 高可用代理, 协议实现, 网络安全, 运维指南">
+  <meta name="author" content="你的姓名/团队">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://socks5-proxy.github.io/socks5/">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="https://socks5-proxy.github.io/sitemap.xml">
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SOCKS5 技术系列：从协议底层到企业级架构">
+  <meta property="og:description" content="六篇深度技术文章，系统讲解 SOCKS5 协议原理、部署实战、安全合规、高可用架构与源码实现。">
+  <meta property="og:url" content="https://socks5-proxy.github.io/socks5/">
+  <meta property="og:site_name" content="SOCKS5 技术系列">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SOCKS5 技术系列：从协议底层到企业级架构">
+
+  <!-- 结构化数据 JSON-LD (CollectionPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "SOCKS5 技术系列",
+    "description": "系统讲解 SOCKS5 协议原理、部署实战、安全合规、高可用架构与源码实现的六篇技术指南。",
+    "url": "https://socks5-proxy.github.io/socks5/",
+    "hasPart": [
+      { "@type": "Article", "name": "01 概述", "url": "https://socks5-proxy.github.io/socks5/01-overview.html" },
+      { "@type": "Article", "name": "02 协议", "url": "https://socks5-proxy.github.io/socks5/02-protocol.html" },
+      { "@type": "Article", "name": "03 部署", "url": "https://socks5-proxy.github.io/socks5/03-deployment.html" },
+      { "@type": "Article", "name": "04 安全", "url": "https://socks5-proxy.github.io/socks5/04-security.html" },
+      { "@type": "Article", "name": "05 进阶", "url": "https://socks5-proxy.github.io/socks5/05-advanced.html" },
+      { "@type": "Article", "name": "06 实现", "url": "https://socks5-proxy.github.io/socks5/06-implementation.html" }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* 首页专属样式，不污染全局 */
+    .hero { text-align: center; padding: 3rem 1rem 2rem; }
+    .hero h1 { font-size: 2.2rem; margin-bottom: 0.8rem; }
+    .hero p { max-width: 680px; margin: 0 auto 1.5rem; color: var(--text-secondary); font-size: 1.05rem; }
+    .btn-primary {
+      display: inline-block; background: var(--primary); color: #fff; padding: 0.6rem 1.5rem;
+      border-radius: var(--radius); text-decoration: none; font-weight: 500; transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .article-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; margin: 2rem 0;
+    }
+    .card {
+      background: var(--surface); padding: 1.5rem; border-radius: var(--radius);
+      box-shadow: var(--shadow); border: 1px solid var(--border); display: flex; flex-direction: column;
+    }
+    .card h3 { margin: 0 0 0.5rem; font-size: 1.15rem; }
+    .card h3 a { color: var(--text); text-decoration: none; }
+    .card h3 a:hover { color: var(--primary); }
+    .card .desc { color: var(--text-secondary); font-size: 0.95rem; flex: 1; margin-bottom: 1rem; }
+    .card .meta { font-size: 0.85rem; color: var(--text-secondary); display: flex; gap: 0.8rem; margin-bottom: 1rem; }
+    .card .read-more { color: var(--primary); text-decoration: none; font-weight: 500; margin-top: auto; }
+    .card .read-more:hover { text-decoration: underline; }
+
+    .guide { background: var(--surface); padding: 1.5rem; border-radius: var(--radius); margin: 2rem 0; border-left: 4px solid var(--primary); }
+    .guide h2 { font-size: 1.3rem; margin-bottom: 0.8rem; }
+    .guide ol { margin-left: 1.2rem; }
+    .guide li { margin-bottom: 0.4rem; }
+    .compliance-note { background: #fff3cd; color: #856404; padding: 0.8rem 1rem; border-radius: var(--radius); margin: 1.5rem 0; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav" aria-label="主导航">
+      <a href="index.html" class="site-logo">SOCKS5 技术系列</a>
+      <div class="nav-links">
+        <a href="01-overview.html">01 概述</a>
+        <a href="02-protocol.html">02 协议</a>
+        <a href="03-deployment.html">03 部署</a>
+        <a href="04-security.html">04 安全</a>
+        <a href="05-advanced.html">05 进阶</a>
+        <a href="06-implementation.html">06 实现</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>SOCKS5 技术系列：从协议底层到企业级架构</h1>
+      <p>6 篇深度指南，系统覆盖协议演进、报文拆解、生产部署、安全审计、高可用调优与源码实现。适合网络工程师、运维、后端开发与信息安全从业者。</p>
+      <a href="01-overview.html" class="btn-primary">🚀 开始阅读</a>
+    </section>
+
+    <section aria-label="系列文章列表">
+      <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">文章目录</h2>
+      <div class="article-grid">
+        <article class="card">
+          <h3><a href="01-overview.html">01 概述：SOCKS5 是什么？为什么它依然是网络代理的“隐形基建”</a></h3>
+          <p class="desc">从协议演进、工作层级、与 HTTP/VPN 的差异到典型应用场景，全面解析 SOCKS5 的不可替代性。</p>
+          <div class="meta"><span>📅 2026-05-01</span><span>🏷️ #网络协议 #代理架构</span></div>
+          <a href="01-overview.html" class="read-more">阅读全文 →</a>
+        </article>
+
+        <article class="card">
+          <h3><a href="02-protocol.html">02 协议机制：逐字节读懂 SOCKS5：握手、认证与流量中继</a></h3>
+          <p class="desc">通过 Wireshark 抓包与报文结构拆解，详解三次交互流程、三大命令差异与 UDP ASSOCIATE 机制。</p>
+          <div class="meta"><span>📅 2026-05-03</span><span>🏷️ #协议解析 #Wireshark</span></div>
+          <a href="02-protocol.html" class="read-more">阅读全文 →</a>
+        </article>
+
+        <article class="card">
+          <h3><a href="03-deployment.html">03 部署实战：从零搭建 SOCKS5 服务：服务端、客户端与联动玩法</a></h3>
+          <p class="desc">提供 Dante/SS5 部署指南、Docker 一键脚本、proxychains/Clash 联动配置与常见排错清单。</p>
+          <div class="meta"><span>📅 2026-05-05</span><span>🏷️ #部署实战 #Docker</span></div>
+          <a href="03-deployment.html" class="read-more">阅读全文 →</a>
+        </article>
+
+        <article class="card">
+          <h3><a href="04-security.html">04 安全防护：SOCKS5 不是黑盒：认证、审计与企业级防护指南</a></h3>
+          <p class="desc">分析裸跑 SOCKS5 的安全隐患，提供认证加固、日志审计、限速策略与合规使用边界。</p>
+          <div class="meta"><span>📅 2026-05-06</span><span>🏷️ #网络安全 #合规指南</span></div>
+          <a href="04-security.html" class="read-more">阅读全文 →</a>
+        </article>
+
+        <article class="card">
+          <h3><a href="05-advanced.html">05 高可用架构：高可用 SOCKS5：代理链、负载均衡与压测调优</a></h3>
+          <p class="desc">详解 Proxy Chaining 原理、HAProxy 负载均衡、内核参数调优与 eBPF 监控实践。</p>
+          <div class="meta"><span>📅 2026-05-07</span><span>🏷️ #高可用 #性能调优</span></div>
+          <a href="05-advanced.html" class="read-more">阅读全文 →</a>
+        </article>
+
+        <article class="card">
+          <h3><a href="06-implementation.html">06 源码实现：从零实现一个 SOCKS5 服务：并发模型与插件化设计</a></h3>
+          <p class="desc">基于 Go/Rust 编写最小可运行服务端，解析异步 I/O 选型、插件扩展机制与开源项目源码导读。</p>
+          <div class="meta"><span>📅 2026-05-08</span><span>🏷️ #源码实现 #Go编程</span></div>
+          <a href="06-implementation.html" class="read-more">阅读全文 →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="guide" aria-label="阅读指南">
+      <h2>📖 阅读路径与建议</h2>
+      <ol>
+        <li><strong>初学者/转岗</strong>：按 01 → 02 → 03 顺序阅读，建立完整认知与动手能力</li>
+        <li><strong>安全/运维</strong>：重点阅读 03 → 04 → 05，掌握生产基线与高可用架构</li>
+        <li><strong>开发者/架构师</strong>：从 02 切入协议细节，直达 06 掌握二次开发与并发模型选型</li>
+      </ol>
+      <p>💡 所有示例均提供可复现的命令与配置。建议配合本地 Docker 环境边读边练。</p>
+    </section>
+
+    <div class="compliance-note" role="alert">
+      ⚠️ <strong>合规提示</strong>：本系列技术内容仅限合法授权场景（如企业内网调试、授权安全测试、合规跨境业务）。任何未经授权的穿透、隐匿或滥用行为均可能违反《网络安全法》《数据安全法》及相关法规。
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 SOCKS5 技术系列 | 仅限合法授权场景使用 | <a href="mailto:contact@example.com">联系我们</a></p>
+  </footer>
+</body>
+</html>
