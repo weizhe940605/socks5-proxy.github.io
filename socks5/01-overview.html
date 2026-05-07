@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOCKS5 是什么？为什么它依然是网络代理的“隐形基建” | SOCKS5 技术系列</title>
+  <meta name="description" content="从协议演进、工作层级、与 HTTP/VPN 的差异到典型应用场景，全面解析 SOCKS5 为何在现代网络架构中仍是不可替代的底层代理协议。">
+  <meta name="keywords" content="SOCKS5, 代理协议, 网络架构, HTTP代理, VPN, 内网穿透, 爬虫出口">
+  <meta name="author" content="你的姓名/团队">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://socks5-proxy.github.io/socks5/01-overview.html">
+  <link rel="prev" href="">
+  <link rel="next" href="https://socks5-proxy.github.io/socks5/02-protocol.html">
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="SOCKS5 是什么？为什么它依然是网络代理的“隐形基建”">
+  <meta property="og:description" content="从协议演进、工作层级、与 HTTP/VPN 的差异到典型应用场景，全面解析 SOCKS5。">
+  <meta property="og:url" content="https://socks5-proxy.github.io/socks5/01-overview.html">
+  <meta property="og:site_name" content="SOCKS5 技术系列">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SOCKS5 是什么？为什么它依然是网络代理的“隐形基建”">
+
+  <!-- 结构化数据 JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "SOCKS5 是什么？为什么它依然是网络代理的“隐形基建”",
+    "description": "从协议演进、工作层级、与 HTTP/VPN 的差异到典型应用场景，全面解析 SOCKS5。",
+    "image": "https://socks5-proxy.github.io/assets/socks5-cover.jpg",
+    "author": { "@type": "Organization", "name": "你的团队" },
+    "publisher": { "@type": "Organization", "name": "你的团队", "logo": { "@type": "ImageObject", "url": "https://socks5-proxy.github.io/logo.png" } },
+    "datePublished": "2026-05-01",
+    "dateModified": "2026-05-07",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://socks5-proxy.github.io/socks5/01-overview.html" }
+  }
+  </script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav" aria-label="主导航">
+      <a href="https://socks5-proxy.github.io/socks5/" class="site-logo">SOCKS5 技术系列</a>
+      <div class="nav-links">
+        <a href="01-overview.html" class="active">01 概述</a>
+        <a href="02-protocol.html">02 协议</a>
+        <a href="03-deployment.html">03 部署</a>
+        <a href="04-security.html">04 安全</a>
+        <a href="05-advanced.html">05 进阶</a>
+        <a href="06-implementation.html">06 实现</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <article>
+      <header>
+        <h1>SOCKS5 是什么？为什么它依然是网络代理的“隐形基建”</h1>
+        <div class="meta">
+          <time datetime="2026-05-01">发布于 2026-05-01</time>
+          <span class="author">作者：你的姓名</span>
+          <span class="tag">#网络协议 #代理架构 #SOCKS5</span>
+        </div>
+      </header>
+
+      <nav id="toc" aria-label="文章目录">
+        <h2>📖 目录</h2>
+        <ul>
+          <li><a href="#evolution">1. 代理协议演进：从 SOCKS4 到 SOCKS5</a></li>
+          <li><a href="#diff">2. 与 HTTP/HTTPS 代理、VPN、SSH 的本质差异</a></li>
+          <li><a href="#matrix">3. 核心能力对比矩阵</a></li>
+          <li><a href="#usecases">4. 典型应用场景解析</a></li>
+          <li><a href="#summary">5. 总结与下一篇预告</a></li>
+        </ul>
+      </nav>
+
+      <section id="evolution">
+        <h2>1. 代理协议演进：从 SOCKS4 到 SOCKS5</h2>
+        <p>SOCKS（Socket Secure）协议由 David Koblas 于 1990 年代初提出，旨在为 TCP/UDP 流量提供通用的代理中继能力。SOCKS4 仅支持 TCP 且无认证机制，而 <a href="https://www.rfc-editor.org/rfc/rfc1928" target="_blank" rel="noopener">RFC 1928</a> 定义的 SOCKS5 在 1996 年正式发布，新增了 UDP 支持、多种认证方法、IPv6 兼容及域名解析代理，成为现代代理架构的基石。</p>
+      </section>
+
+      <section id="diff">
+        <h2>2. 与 HTTP/HTTPS 代理、VPN、SSH 的本质差异</h2>
+        <h3>工作层级不同</h3>
+        <p>HTTP 代理工作在应用层（L7），需解析 HTTP 语义；SOCKS5 工作在传输层（L4/L5），仅做字节流转发，对上层协议完全透明。VPN 与 SSH 隧道则构建在加密网络层或应用层隧道之上。</p>
+        <h3>协议感知 vs 透明中继</h3>
+        <p>HTTP 代理可缓存、改写请求头；SOCKS5 如同“透明管道”，不修改载荷，仅负责建立连接与路由。这也决定了它在爬虫、P2P、游戏加速等场景的不可替代性。</p>
+      </section>
+
+      <section id="matrix">
+        <h2>3. 核心能力对比矩阵</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>协议/技术</th>
+              <th>工作层级</th>
+              <th>支持 UDP</th>
+              <th>原生加密</th>
+              <th>认证方式</th>
+              <th>典型端口</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>HTTP/HTTPS 代理</td>
+              <td>应用层 (L7)</td>
+              <td>❌</td>
+              <td>HTTPS 支持</td>
+              <td>Basic / NTLM</td>
+              <td>3128 / 8080</td>
+            </tr>
+            <tr>
+              <td>SOCKS5</td>
+              <td>传输层 (L4/L5)</td>
+              <td>✅</td>
+              <td>❌（需外层加密）</td>
+              <td>无 / 用户名密码 / GSSAPI</td>
+              <td>1080</td>
+            </tr>
+            <tr>
+              <td>IPsec / WireGuard VPN</td>
+              <td>网络层 (L3)</td>
+              <td>✅</td>
+              <td>✅</td>
+              <td>证书 / 预共享密钥</td>
+              <td>51820 / 4500</td>
+            </tr>
+            <tr>
+              <td>SSH 动态转发 (-D)</td>
+              <td>应用层隧道</td>
+              <td>✅（部分实现）</td>
+              <td>✅</td>
+              <td>密钥 / 密码</td>
+              <td>22</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="usecases">
+        <h2>4. 典型应用场景解析</h2>
+        <ul>
+          <li><strong>爬虫出口池</strong>：透明转发 HTTP/HTTPS，支持高并发与 IP 轮换</li>
+          <li><strong>内网穿透与调试</strong>：配合 <code>proxychains-ng</code> 或系统代理实现无感访问</li>
+          <li><strong>游戏加速与 P2P</strong>：UDP ASSOCIATE 模式低延迟中继</li>
+          <li><strong>IoT 设备联网</strong>：轻量客户端占用资源少，适合嵌入式环境</li>
+        </ul>
+      </section>
+
+      <section id="summary">
+        <h2>5. 总结与下一篇预告</h2>
+        <p>SOCKS5 之所以历经近 30 年仍未被淘汰，核心在于其<strong>协议极简、通用透明、扩展灵活</strong>。它不是“万能银弹”，但在需要协议无关转发、UDP 支持或轻量代理链的场景中，依然是最优解。</p>
+        <p>👉 下一篇《逐字节读懂 SOCKS5：握手、认证与流量中继》将带你通过抓包与状态机拆解三次交互流程，彻底掌握协议底层机制。</p>
+      </section>
+
+      <aside class="series-nav" aria-label="系列导航">
+        <span>上一篇：无</span>
+        <span>下一篇：<a href="02-protocol.html">02 协议机制拆解 →</a></span>
+      </aside>
+    </article>
+  </main>
+
+  <footer>
+    <p>© 2026 SOCKS5 技术系列 | 仅限合法授权场景使用 | <a href="mailto:contact@example.com">联系我们</a></p>
+  </footer>
+</body>
+</html>
