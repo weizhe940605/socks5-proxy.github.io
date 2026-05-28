@@ -445,6 +445,14 @@
                     
                     <tr>
                         <td class="protocol">socks5</td>
+                        <td class="ip">38.54.X.87</td>
+                        <td class="port">10808</td>
+                        <td class="location">[机房] 泰国 曼谷 曼谷</td>
+                        <td><button class="copy-btn" onclick="copyProxy(this, 'socks5://38.54.X.87:10808 [[机房] 泰国 曼谷 曼谷]')">复制</button></td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="protocol">socks5</td>
                         <td class="ip">35.189.X.188</td>
                         <td class="port">1080</td>
                         <td class="location">[机房] 日本 东京都 东京 — 谷歌云 GCP</td>
@@ -516,35 +524,35 @@
                     </tr>
                     
                     <tr>
-                        <td class="protocol">socks5</td>
-                        <td class="ip">194.226.X.202</td>
-                        <td class="port">1080</td>
-                        <td class="location">[机房] 芬兰 新地区 赫尔辛基 — JustHost</td>
-                        <td><button class="copy-btn" onclick="copyProxy(this, 'socks5://194.226.X.202:1080 [[机房] 芬兰 新地区 赫尔辛基 — JustHost]')">复制</button></td>
+                        <td class="protocol">http</td>
+                        <td class="ip">189.112.X.26</td>
+                        <td class="port">3128</td>
+                        <td class="location">[机房] 巴西 圣保罗州 弗兰卡</td>
+                        <td><button class="copy-btn" onclick="copyProxy(this, 'http://189.112.X.26:3128 [[机房] 巴西 圣保罗州 弗兰卡]')">复制</button></td>
                     </tr>
                     
                     <tr>
                         <td class="protocol">http</td>
                         <td class="ip">42.117.X.225</td>
                         <td class="port">8080</td>
-                        <td class="location">[机房] 越南 胡志明市 胡志明市</td>
-                        <td><button class="copy-btn" onclick="copyProxy(this, 'http://42.117.X.225:8080 [[机房] 越南 胡志明市 胡志明市]')">复制</button></td>
+                        <td class="location" style="color: green; font-weight: bold;">[家宽] [原生IP] 越南 胡志明市 胡志明市</td>
+                        <td><button class="copy-btn" onclick="copyProxy(this, 'http://42.117.X.225:8080 [[家宽] [原生IP] 越南 胡志明市 胡志明市]')">复制</button></td>
                     </tr>
                     
                     <tr>
                         <td class="protocol">http</td>
                         <td class="ip">120.202.X.139</td>
                         <td class="port">2080</td>
-                        <td class="location">[机房] 美国 加利福尼亚州 洛杉矶</td>
-                        <td><button class="copy-btn" onclick="copyProxy(this, 'http://120.202.X.139:2080 [[机房] 美国 加利福尼亚州 洛杉矶]')">复制</button></td>
+                        <td class="location">[机房] [原生IP] 美国 加利福尼亚州 洛杉矶</td>
+                        <td><button class="copy-btn" onclick="copyProxy(this, 'http://120.202.X.139:2080 [[机房] [原生IP] 美国 加利福尼亚州 洛杉矶]')">复制</button></td>
                     </tr>
                     
                     <tr>
                         <td class="protocol">http</td>
                         <td class="ip">195.36.X.217</td>
                         <td class="port">8080</td>
-                        <td class="location">[机房] 意大利 伦巴第 米兰</td>
-                        <td><button class="copy-btn" onclick="copyProxy(this, 'http://195.36.X.217:8080 [[机房] 意大利 伦巴第 米兰]')">复制</button></td>
+                        <td class="location">[机房] [原生IP] 意大利 伦巴第 米兰</td>
+                        <td><button class="copy-btn" onclick="copyProxy(this, 'http://195.36.X.217:8080 [[机房] [原生IP] 意大利 伦巴第 米兰]')">复制</button></td>
                     </tr>
                     
                     <tr>
@@ -596,19 +604,11 @@
                     </tr>
                     
                     <tr>
-                        <td class="protocol">http</td>
-                        <td class="ip">168.138.X.230</td>
-                        <td class="port">9000</td>
-                        <td class="location">[机房] 日本 千叶县 印西市 — 甲骨文云 Oracle</td>
-                        <td><button class="copy-btn" onclick="copyProxy(this, 'http://168.138.X.230:9000 [[机房] 日本 千叶县 印西市 — 甲骨文云 Oracle]')">复制</button></td>
-                    </tr>
-                    
-                    <tr>
                         <td class="protocol">https</td>
                         <td class="ip">104.223.X.133</td>
                         <td class="port">8443</td>
-                        <td class="location">[机房] 美国 加利福尼亚州 圣何塞</td>
-                        <td><button class="copy-btn" onclick="copyProxy(this, 'https://104.223.X.133:8443 [[机房] 美国 加利福尼亚州 圣何塞]')">复制</button></td>
+                        <td class="location">[机房] [原生IP] 美国 加利福尼亚州 圣何塞</td>
+                        <td><button class="copy-btn" onclick="copyProxy(this, 'https://104.223.X.133:8443 [[机房] [原生IP] 美国 加利福尼亚州 圣何塞]')">复制</button></td>
                     </tr>
                     
                     <tr>
@@ -715,7 +715,7 @@
         
         <div class="footer">
             代理资源抓取于 公共代理池网站：<a href="https://tomcat1235.nyc.mn" target="_blank" rel="nofollow noopener">https://tomcat1235.nyc.mn</a><br>
-            最后更新时间: <time datetime="2026-05-28T11:00:02+08:00">2026-05-28 11:00:02</time><br>
+            最后更新时间: <time datetime="2026-05-28T11:30:02+08:00">2026-05-28 11:30:02</time><br>
             <a href="/sitemap.xml">网站地图</a> | <a href="allproxy.html" target="_blank">历史代理</a> | <a href="/socks5/" target="_blank">SOCKS5 技术系列</a>
         </div>
         
